@@ -1,1 +1,1 @@
-##Ecommerce App using React with Redux
+# Ecommerce App using React with Redux
