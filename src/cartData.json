@@ -1,0 +1,20 @@
+[
+  {
+    "id": 201,
+    "title": "Product1",
+    "url": "/images/product(1).jpg",
+    "price": "$12.00"
+  },
+  {
+    "id": 202,
+    "title": "Product2",
+    "url": "/images/product(2).jpg",
+    "price": "$12.00"
+  },
+  {
+    "id": 203,
+    "title": "Product3",
+    "url": "/images/product(3).jpg",
+    "price": "$12.00"
+  }
+]
