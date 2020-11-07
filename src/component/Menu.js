@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { addToCart } from "../redux/cart/cartActions";
+import {loadProducts} from '../redux/home/homeActions'
 import { makeStyles } from "@material-ui/core/styles";
 
 import Paper from "@material-ui/core/Paper";
@@ -36,8 +37,12 @@ function Menu(props) {
   const classes = useStyles();
 
   useEffect(() => {
-    console.log("menu remounted");
+    if(props.displayedProducts.length === 0)
+      props.loadProducts();
+    
   }, []);
+
+ 
 
   //***************************
   const [open, setOpen] = React.useState(false);
@@ -51,8 +56,7 @@ function Menu(props) {
   };
   //************************
 
-  return (
-    <div className={classes.root}>
+  return props.loading?"Products Loading":(<div className={classes.root}>
       <Snackbar
         open={open}
         autoHideDuration={2000}
@@ -122,15 +126,17 @@ function Menu(props) {
           </Grid>
         </Grid>
       </Grid>
-    </div>
-  );
+    </div>)
 }
+    
+
+
 const mapStateToProps = (state) => {
-  const { products, filters } = state.home;
+  const { loading, products, filters } = state.home;
 
   return {
-    displayedProducts:
-      filters.length === 0
+    loading,
+    displayedProducts:filters.length === 0
         ? products
         : products.filter((item) =>
             filters.some((criteria) => item.category === criteria)
@@ -143,6 +149,9 @@ const mapDispatchToProps = (dispatch) => {
     addToCart: (product) => {
       dispatch(addToCart(product));
     },
+    loadProducts:() => {
+      dispatch(loadProducts())
+    }
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

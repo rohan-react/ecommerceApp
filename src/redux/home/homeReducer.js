@@ -1,23 +1,44 @@
 import {
   FILTER_PRODUCTS,
-  LOAD_PRODUCTS,
+  LOADING_FAILED,
+  LOADING_STARTED,
+  LOADING_SUCCESS,
+  
   SORT_PRODUCTS,
 } from "./homeActionTypes";
 import { ADD_TO_CART, REMOVE_FROM_CART } from "../cart/cartActionTypes";
-import images from "../../productsData.json";
+
 
 const initialState = {
-  products: [...images],
+  products: [],
   filters: [],
   criteria: "",
+  loading:false,
+  error:null
 };
 const homeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOAD_PRODUCTS:
+    case LOADING_STARTED:
+      return{
+        ...state,
+        loading:true
+      }
+
+    case LOADING_FAILED:
+      return{
+        ...state,
+        loading:false,
+        error:action.payload.err
+      }
+      
+    case LOADING_SUCCESS:
       return {
         ...state,
-        products: action.payload.productList,
-      };
+        loading:false,
+        error:null,
+        products:[...action.payload.products]
+      }
+
     case ADD_TO_CART:
       return {
         ...state,

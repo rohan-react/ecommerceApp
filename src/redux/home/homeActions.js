@@ -1,17 +1,50 @@
+import axios from "axios";
 import {
   FILTER_PRODUCTS,
-  LOAD_PRODUCTS,
+  LOADING_FAILED,
+  LOADING_STARTED,
+  LOADING_SUCCESS,
   SORT_PRODUCTS,
+
 } from "./homeActionTypes";
 
-export const loadProducts = (productList) => {
+export const loadProducts = () => {
+  return dispatch => {
+    dispatch(loadingStarted());
+  axios.get("http://localhost:5000/api/products")
+  .then(res => {
+   
+    dispatch(loadingSuccess(res.data))
+  })
+  .catch(err =>{
+    dispatch(loadingFailed(err))
+  })
+
+  }
+}
+
+const loadingStarted = () => {
   return {
-    type: LOAD_PRODUCTS,
-    payLoad: {
-      productList,
-    },
+    type: LOADING_STARTED,
   };
 };
+
+const loadingFailed = (err) => {
+  return {
+    type: LOADING_FAILED,
+    payload:err
+  }
+}
+
+const loadingSuccess = (products) => {
+  return {
+    type:LOADING_SUCCESS,
+    payload:{
+      products
+    }
+  }
+}
+
 export const filterProducts = (filters) => {
   return {
     type: FILTER_PRODUCTS,
