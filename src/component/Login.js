@@ -1,5 +1,7 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
+import {connect} from 'react-redux'
 import { Link } from "react-router-dom";
+import {disableRedirect} from '../redux/register/registerActions'
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -9,6 +11,10 @@ import Divider from "@material-ui/core/Divider";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
 import FastfoodIcon from "@material-ui/icons/Fastfood";
+import Alert from "@material-ui/lab/Alert";
+import IconButton from '@material-ui/core/IconButton';
+import Collapse from '@material-ui/core/Collapse';
+import CloseIcon from '@material-ui/icons/Close';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,11 +25,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Login() {
+function Login(props) {
   const classes = useStyles();
+  const [flash, setFlash] = useState("")
+
+  useEffect(() => {
+    props.disableRedirect()
+    if(props.location.state)
+      setFlash(props.location.state.message)
+  },[])
+
+
+
   return (
     <div>
-      <Card className={classes.root}>
+     <Card className={classes.root}> 
+     <Collapse in={flash.length>0}>
+     
+        <Alert
+          severity="success"
+          
+          action={
+            <IconButton
+              size="small"
+              onClick={() => {
+                setFlash("");
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          {flash}
+        </Alert>
+       
+      </Collapse>
         <CardContent>
           <Typography align="center" color="secondary" gutterBottom>
             <FastfoodIcon /> FoodCorner
@@ -62,3 +98,12 @@ export default function Login() {
     </div>
   );
 }
+const mapDispatchToProps = dispatch => {
+  return {
+    disableRedirect:() => {
+      dispatch(disableRedirect());
+    }
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Login)

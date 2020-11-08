@@ -20,9 +20,11 @@ var corsOptions = {
   optionsSuccessStatus: 200 
 }
 
-app.use(cors(corsOptions))
+app.use(express.json());
+app.use(cors())
 
 app.use("/", require('./Routes/index'));
+app.use("/user", require('./Routes/user'));
 
 const PORT = process.env.PORT || 5000
 

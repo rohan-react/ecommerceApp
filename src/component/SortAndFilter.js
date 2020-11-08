@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { connect } from "react-redux";
 import { filterProducts, sortProducts } from "../redux/home/homeActions";
