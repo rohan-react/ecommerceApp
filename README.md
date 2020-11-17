@@ -5,3 +5,7 @@ Ecommerce app with basic features such as cart operations, product sorting and f
 - design library : material ui
 
 - State management : Redux
+
+- Backend : express
+
+- Session management : passport.js
