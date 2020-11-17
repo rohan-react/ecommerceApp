@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { addToCart } from "../redux/cart/cartActions";
-import {loadProducts} from '../redux/home/homeActions'
+import {loadMainPage} from '../redux/home/homeActions';
+import {disableHomeRedirect} from '../redux/login/loginActions'
 import { makeStyles } from "@material-ui/core/styles";
-
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
@@ -15,6 +15,8 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import DoneIcon from "@material-ui/icons/Done";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
+import Container from "@material-ui/core/Container";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     padding: theme.spacing(1),
+    margin: theme.spacing(1),
     "&:hover": {
       boxShadow: "2px 2px 5px",
     },
@@ -31,6 +34,10 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     display: "block",
   },
+  grid:{
+    backgroundColor:"#f1f1f1",
+    
+  },
 }));
 
 function Menu(props) {
@@ -38,7 +45,9 @@ function Menu(props) {
 
   useEffect(() => {
     if(props.displayedProducts.length === 0)
-      props.loadProducts();
+      props.loadMainPage();
+    
+    props.disableHomeRedirect()
     
   }, []);
 
@@ -71,19 +80,20 @@ function Menu(props) {
         </Alert>
       </Snackbar>
 
-      <Grid container spacing={1}>
-        <Grid item xs={3} md={2}>
+      <Grid container>
+      
+      
+        <Grid item xs={3} md={2} className={classes.grid}>
           <SortAndFilter />
         </Grid>
-        <Grid item xs={9} md={10}>
-          <Grid container spacing={3}>
-            <Grid item xs={12}>
-              <Typography variant="h5">Our Menu</Typography>
-            </Grid>
+        <Grid item xs={9} md={10} >
+        <Container maxWidth={false} >
+          <Grid container  className={classes.grid}>
+            
 
             {props.displayedProducts.map((product) => (
               <Grid
-                className={classes.grid}
+                
                 key={product.id}
                 item
                 xs={6}
@@ -124,6 +134,7 @@ function Menu(props) {
               </Grid>
             ))}
           </Grid>
+          </Container>
         </Grid>
       </Grid>
     </div>)
@@ -149,8 +160,11 @@ const mapDispatchToProps = (dispatch) => {
     addToCart: (product) => {
       dispatch(addToCart(product));
     },
-    loadProducts:() => {
-      dispatch(loadProducts())
+    loadMainPage:() => {
+      dispatch(loadMainPage())
+    },
+    disableHomeRedirect: () => {
+      dispatch(disableHomeRedirect())
     }
   };
 };

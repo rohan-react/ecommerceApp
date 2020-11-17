@@ -1,44 +1,52 @@
 import axios from "axios";
 import {
   FILTER_PRODUCTS,
-  LOADING_FAILED,
-  LOADING_STARTED,
-  LOADING_SUCCESS,
+  PERSISTED_USER,
+  PRODUCT_LOADING_FAILED,
+  PRODUCT_LOADING_STARTED,
+  PRODUCT_LOADING_SUCCESS,
   SORT_PRODUCTS,
 
 } from "./homeActionTypes";
 
-export const loadProducts = () => {
+export const loadMainPage = () => {
   return dispatch => {
-    dispatch(loadingStarted());
-  axios.get("http://localhost:5000/api/products")
-  .then(res => {
-   
-    dispatch(loadingSuccess(res.data))
-  })
+    dispatch(productLoadingStarted());
+    const loadProducts = axios.get("http://localhost:5000/api/products");
+    const loadPersistedUser = axios.get("http://localhost:5000/",{withCredentials:true})
+
+    axios.all([loadProducts, loadPersistedUser])
+    .then(responses => {
+      const response1 = responses[0].data;
+      const response2 = responses[1].data;
+      
+
+       dispatch(productLoadingSuccess(response1));
+       dispatch(persistedUser(response2))
+    })
   .catch(err =>{
-    dispatch(loadingFailed(err))
+    dispatch(productLoadingFailed(err))
   })
 
   }
 }
 
-const loadingStarted = () => {
+const productLoadingStarted = () => {
   return {
-    type: LOADING_STARTED,
+    type: PRODUCT_LOADING_STARTED,
   };
 };
 
-const loadingFailed = (err) => {
+const productLoadingFailed = (err) => {
   return {
-    type: LOADING_FAILED,
+    type: PRODUCT_LOADING_FAILED,
     payload:err
   }
 }
 
-const loadingSuccess = (products) => {
+const productLoadingSuccess = (products) => {
   return {
-    type:LOADING_SUCCESS,
+    type:PRODUCT_LOADING_SUCCESS,
     payload:{
       products
     }
@@ -61,3 +69,14 @@ export const sortProducts = (criteria) => {
     },
   };
 };
+
+export const persistedUser = (user) => {
+  return {
+    type:PERSISTED_USER,
+    payload:{
+      user
+    }
+  }
+}
+
+

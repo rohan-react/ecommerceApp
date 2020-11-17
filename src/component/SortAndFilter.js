@@ -14,10 +14,10 @@ import FormGroup from "@material-ui/core/FormGroup";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
-    marginTop: "2rem",
-    marginLeft: "1rem",
-  },
+    padding:theme.spacing(1),
+   
+  }
+
 }));
 
 function SortAndFilter(props) {
@@ -39,8 +39,8 @@ function SortAndFilter(props) {
   };
 
   return (
-    <Grid container alignContent="flex-start" className={classes.root}>
-      <Grid item>
+    <div className={classes.root}>
+      <div>
         <FormControl component="fieldset">
           <FormLabel component="legend">
             <Typography variant="caption" color="primary">
@@ -111,9 +111,9 @@ function SortAndFilter(props) {
             />
           </RadioGroup>
         </FormControl>
-      </Grid>
+      </div>
 
-      <Grid item>
+      <div>
         <FormControl component="fieldset">
           <FormLabel component="legend">
             <Typography variant="caption" color="primary">
@@ -168,8 +168,8 @@ function SortAndFilter(props) {
             />
           </FormGroup>
         </FormControl>
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 }
 const mapStateToProps = (state) => {

@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import {connect} from 'react-redux'
-import { Link } from "react-router-dom";
-import {disableRedirect} from '../redux/register/registerActions'
+import { Link, Redirect } from "react-router-dom";
+import {closeFlash, loginUser} from '../redux/login/loginActions'
+import {closeAlert} from '../redux/register/registerActions'
+
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -27,38 +29,68 @@ const useStyles = makeStyles((theme) => ({
 
 function Login(props) {
   const classes = useStyles();
-  const [flash, setFlash] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
 
-  useEffect(() => {
-    props.disableRedirect()
-    if(props.location.state)
-      setFlash(props.location.state.message)
-  },[])
+  const handleLogin = () => {
+    if(email===''|| password==='' )
+     setError("All fields are compulsory")
+    else if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))
+     setError("enter a valid email ")
+    else if(password.length<2)
+     setError("Password must be atleast 8 characters long")
+     else {
+       
+       props.loginUser({email,password})
+     }
+    
+
+   }
 
 
 
-  return (
+  return props.loading?"loading":props.redirectToHome?
+  <Redirect to={{
+    pathname:"/",
+    state:{user:props.user}
+  }}/> :
+  (
     <div>
      <Card className={classes.root}> 
-     <Collapse in={flash.length>0}>
-     
+     <Collapse in={error.length>0}>
         <Alert
-          severity="success"
-          
+          severity="error" 
           action={
             <IconButton
               size="small"
               onClick={() => {
-                setFlash("");
+                setError("");
               }}
             >
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
         >
-          {flash}
+          
         </Alert>
-       
+      </Collapse>
+     <Collapse in={props.message.length>0}>
+        <Alert
+          severity="error" 
+          action={
+            <IconButton
+              size="small"
+              onClick={() => {
+                props.closeFlash()
+              }}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          {props.message}
+        </Alert>
       </Collapse>
         <CardContent>
           <Typography align="center" color="secondary" gutterBottom>
@@ -71,16 +103,25 @@ function Login(props) {
             fullWidth
             margin="normal"
             variant="outlined"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
           />
           <TextField
             label="Password"
             fullWidth
             margin="normal"
             variant="outlined"
+            value={password}
+            onChange={(e)=>setPassword(e.target.value)}
           />
         </CardContent>
         <CardActions>
-          <Button variant="contained" size="small" color="primary" fullWidth>
+          <Button 
+          variant="contained" 
+          size="small" 
+          color="primary" 
+          onClick={handleLogin}
+          fullWidth>
             Login
           </Button>
           <Button
@@ -98,12 +139,26 @@ function Login(props) {
     </div>
   );
 }
-const mapDispatchToProps = dispatch => {
+const mapStateToProps = state => {
+  const {message, loading, redirectToHome, user} = state.login
   return {
-    disableRedirect:() => {
-      dispatch(disableRedirect());
-    }
+    message,
+    loading,
+    redirectToHome,
+    user,
   }
 }
 
-export default connect(null, mapDispatchToProps)(Login)
+const mapDispatchToProps = dispatch => {
+  return {
+    closeFlash:()=>{
+      dispatch(closeFlash());
+    },
+    loginUser: (user) => {
+      dispatch(loginUser(user))
+    },
+  
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

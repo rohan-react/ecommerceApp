@@ -1,5 +1,5 @@
-const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, DISABLE_REDIRECT } = require("./loginActionTypes")
 import axios from 'axios'
+const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, DISABLE_HOME_REDIRECT, CLOSE_FLASH, LOGOUT_START, LOGOUT_SUCCESS, LOGOUT_FAILED } = require("./loginActionTypes")
 
 const loginStart = ()=>{
     return {
@@ -25,12 +25,53 @@ const loginFailed = (message) => {
     }
 }
 
-export const login = (user) => {
+export const loginUser = (user) => {
     return dispatch => {
         dispatch(loginStart());
-        axios.post("http://localhost:5000/user/login",user)
-        .then(res => dispatch(loginSuccess(res)) )
-        .catch(err => dispatch(loginFailed(err)))
+        axios.post("http://localhost:5000/user/login",user,{withCredentials:true})
+        .then(res => {
+           
+            dispatch(loginSuccess(res.data))} )
+        .catch(err => dispatch(loginFailed(err.response.data)))
+    }
+}
+export const closeFlash = () => {
+    return {
+     type:CLOSE_FLASH
+    }
+    
+}
+
+export const disableHomeRedirect = () => {
+    return {
+        type:DISABLE_HOME_REDIRECT
     }
 }
 
+export const logoutUser = () =>{
+     return dispatch => {
+         dispatch(logoutStart);
+         axios.get('http://localhost:5000/user/logout',{withCredentials:true})
+         .then(res => dispatch(logoutSuccess()))
+         .catch(err => dispatch(logoutFailed()))
+     }
+}
+
+export const logoutStart = () => {
+    return {
+        type:LOGOUT_START,
+        
+    }
+}
+export const logoutSuccess = () => {
+    return {
+        type:LOGOUT_SUCCESS,
+
+    }
+}
+export const logoutFailed = () => {
+    return {
+        type:LOGOUT_FAILED,
+
+    }
+}

@@ -8,6 +8,7 @@ import {
 } from "../redux/cart/cartActions";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+import ButtonGroup from '@material-ui/core/ButtonGroup'
 
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
@@ -22,10 +23,16 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "1rem",
   },
   img: {
-    padding: "0.5rem",
     width: "100%",
     display: "block",
   },
+  grid:{
+    backgroundColor:"#f1f1f1",
+    padding:"1rem"
+    
+  },
+ 
+  
 }));
 
 function Cart(props) {
@@ -34,23 +41,26 @@ function Cart(props) {
 
   return (
     <div className={classes.root}>
-      <Typography variant="h5" align="center">
-        Your Cart
-      </Typography>
       {props.cartItems.length === 0 ? (
-        <Typography variant="body1" align="center" gutterBottom>
-          is Empty
+        <Typography variant="h6" align="center" gutterBottom>
+         Your Cart is Empty
         </Typography>
       ) : (
         <div>
-          <Grid direction="column" container spacing={1}>
+        <Container maxWidth={false}>
+          {/* main container */}
+          <Grid  container >
+
+         
+          <Grid item xs={7} md={9} >
             {props.cartItems.map((img) => (
-              <Grid container key={img.id} spacing={3} alignItems="center">
-                <Grid item xs={2} md={3}></Grid>
-                <Grid item xs={3} md={2}>
+              <Grid container key={img.id}  alignItems="center" className={classes.grid}>
+                 <Grid item xs={0} md={1}></Grid>
+                 <Grid item xs={5} md={2}>
                   <img className={classes.img} src={img.url} alt="" />
                 </Grid>
-                <Grid item xs={3} md={3}>
+
+                <Grid item xs={4} md={2} align="center">
                   <Typography variant="body2" component="h6">
                     {img.title}
                   </Typography>
@@ -66,7 +76,7 @@ function Cart(props) {
                     remove
                   </Button>
                 </Grid>
-                <Grid item xs={2} align="center">
+                <Grid item  xs={3} align="center">
                   <IconButton onClick={() => props.increment(img.id)}>
                     <ArrowDropUpIcon />
                   </IconButton>
@@ -78,19 +88,42 @@ function Cart(props) {
                   </IconButton>
                 </Grid>
               </Grid>
+              
             ))}
-          </Grid>
-          <Container align="center">
-            <Typography>Total Items:{props.totalItems} </Typography>
-            <Typography>Total: ${props.totalPrice.toFixed(2)}</Typography>
+            </Grid>
 
-            <Button variant="outlined" color="secondary" size="small">
+            <Grid xs={1}></Grid>
+
+            
+            <Grid align="center" item  xs={4} md={2} className={classes.grid}>
+
+              <Typography gutterBottom variant="h6">Your Cart </Typography>
+              <Typography gutterBottom variant="body2">Total Items:{props.totalItems} </Typography>
+            <Typography gutterBottom variant="body2">Total: ${props.totalPrice.toFixed(2)}</Typography>
+            <ButtonGroup
+        orientation="vertical"
+        color="primary"
+      
+        variant="text"
+      >
+            <Button fullWidth variant="contained" color="secondary" size="small">
               Buy Now
             </Button>
-            <Button onClick={props.emptyCart} color="primary" size="small">
+            <br/>
+            <Button  fullWidth variant="contained" color="secondary" size="small">
+              Save Cart
+            </Button>
+            <br/>
+            <Button variant="outlined" fullWidth onClick={props.emptyCart} color="primary" size="small">
               Empty Cart
             </Button>
+            </ButtonGroup>
+            </Grid>
+
+
+          </Grid>
           </Container>
+          
         </div>
       )}
     </div>

@@ -1,12 +1,12 @@
 import {
   FILTER_PRODUCTS,
-  LOADING_FAILED,
-  LOADING_STARTED,
-  LOADING_SUCCESS,
+  PRODUCT_LOADING_FAILED,
+  PRODUCT_LOADING_STARTED,
+  PRODUCT_LOADING_SUCCESS,
   
   SORT_PRODUCTS,
 } from "./homeActionTypes";
-import { ADD_TO_CART, REMOVE_FROM_CART } from "../cart/cartActionTypes";
+import { ADD_TO_CART, EMPTY_CART, REMOVE_FROM_CART } from "../cart/cartActionTypes";
 
 
 const initialState = {
@@ -18,20 +18,20 @@ const initialState = {
 };
 const homeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOADING_STARTED:
+    case PRODUCT_LOADING_STARTED:
       return{
         ...state,
         loading:true
       }
 
-    case LOADING_FAILED:
+    case PRODUCT_LOADING_FAILED:
       return{
         ...state,
         loading:false,
         error:action.payload.err
       }
       
-    case LOADING_SUCCESS:
+    case PRODUCT_LOADING_SUCCESS:
       return {
         ...state,
         loading:false,
@@ -57,6 +57,14 @@ const homeReducer = (state = initialState, action) => {
             : product
         ),
       };
+
+      case EMPTY_CART:
+        return{
+          ...state,
+          products:state.products.map(product => (
+            {...product, inCart:false}
+          ) )
+        }
 
     case FILTER_PRODUCTS:
       return {

@@ -35,9 +35,9 @@ function Register(props) {
   const classes = useStyles();
 
 
-  
 
-  const handleLogin = () => {
+
+  const handleRegister = () => {
     if(name===''|| email===''|| password===''|| password2==='')
      setError("All fields are compulsory")
     else if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))
@@ -53,11 +53,14 @@ function Register(props) {
 
    }
 
-   return props.loading?"registering": ( props.redirectToLogin ? <Redirect to={{
-     pathname:'/login',
-     state:{message:props.message}
-   }}/> :
-    (<div> 
+   const handleClose =() => {
+
+    console.log(props.message)
+    props.closeAlert()
+   }
+
+   return props.loading?"registering":
+    <div> 
       <Card className={classes.root}>
         <CardContent>
           <Typography align="center" color="secondary" gutterBottom>
@@ -84,20 +87,20 @@ function Register(props) {
         </Alert>
       </Collapse>
 
-        <Collapse in={props.message.length>0}>
+        <Collapse in={props.message.info.length>0}>
         <Alert
-          severity="error"
+          severity={props.message.error?"error":"success"}
           variant="outlined"
           action={
             <IconButton
               size="small"
-              onClick={() => props.closeAlert()}
+              onClick={handleClose}
             >
               <CloseIcon fontSize="inherit" />
             </IconButton>
           }
         >
-          {props.message}
+          {props.message.info}
         </Alert>
       </Collapse>
 
@@ -129,8 +132,7 @@ function Register(props) {
             fullWidth
             margin="normal"
             variant="outlined"
-            required
-            
+            required  
           />
          
           <TextField
@@ -145,7 +147,7 @@ function Register(props) {
           />
         </CardContent>
         <CardActions align="center">
-          <Button variant="contained" size="small" color="primary" fullWidth onClick={handleLogin}>
+          <Button variant="contained" size="small" color="primary" fullWidth onClick={handleRegister}>
             Register
           </Button>
           <Button
@@ -161,8 +163,8 @@ function Register(props) {
           </Button>
         </CardActions>
       </Card>
-    </div>)
-  );
+    </div>
+  
 }
 const mapStateToProps = state => {
   const {loading, message, redirectToLogin} = state.register
