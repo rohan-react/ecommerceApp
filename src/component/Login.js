@@ -17,7 +17,8 @@ import Alert from "@material-ui/lab/Alert";
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "5rem",
@@ -25,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     alignItems: "center",
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+  }
 }));
 
 function Login(props) {
@@ -41,7 +45,7 @@ function Login(props) {
     else if(password.length<2)
      setError("Password must be atleast 8 characters long")
      else {
-       
+       setError("")
        props.loginUser({email,password})
      }
     
@@ -50,13 +54,17 @@ function Login(props) {
 
 
 
-  return props.loading?"loading":props.redirectToHome?
+  return props.redirectToHome?
   <Redirect to={{
     pathname:"/",
     state:{user:props.user}
   }}/> :
   (
     <div>
+    <Backdrop className={classes.backdrop}  open={props.loading} >
+        <CircularProgress color="secondary" />
+      </Backdrop>
+     
      <Card className={classes.root}> 
      <Collapse in={error.length>0}>
         <Alert
@@ -72,7 +80,7 @@ function Login(props) {
             </IconButton>
           }
         >
-          
+          {error}
         </Alert>
       </Collapse>
      <Collapse in={props.message.length>0}>
@@ -92,7 +100,7 @@ function Login(props) {
           {props.message}
         </Alert>
       </Collapse>
-        <CardContent>
+        <CardContent onClick={props.closeFlash}>
           <Typography align="center" color="secondary" gutterBottom>
             <FastfoodIcon /> FoodCorner
           </Typography>

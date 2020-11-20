@@ -15,7 +15,8 @@ import Alert from "@material-ui/lab/Alert";
 import IconButton from '@material-ui/core/IconButton';
 import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +24,9 @@ const useStyles = makeStyles((theme) => ({
     width: "50%",
     margin: "auto",
   },
+   backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+  }
 }));
 
 function Register(props) {
@@ -47,6 +51,7 @@ function Register(props) {
     else if(password.length<2)
      setError("Password must be atleast 8 characters long")
      else {
+       setError("")
        props.registerUser({name,email,password})
      }
     
@@ -59,8 +64,11 @@ function Register(props) {
     props.closeAlert()
    }
 
-   return props.loading?"registering":
-    <div> 
+   return <div> 
+       <Backdrop className={classes.backdrop}  open={props.loading} >
+        <CircularProgress color="secondary" />
+      </Backdrop>
+     
       <Card className={classes.root}>
         <CardContent>
           <Typography align="center" color="secondary" gutterBottom>
@@ -104,7 +112,7 @@ function Register(props) {
         </Alert>
       </Collapse>
 
-       
+       <div onClick={props.closeAlert}>
        <TextField  
             value={name}
             onChange={(e)=>setName(e.target.value)}
@@ -145,6 +153,7 @@ function Register(props) {
             variant="outlined"
              required
           />
+          </div>
         </CardContent>
         <CardActions align="center">
           <Button variant="contained" size="small" color="primary" fullWidth onClick={handleRegister}>

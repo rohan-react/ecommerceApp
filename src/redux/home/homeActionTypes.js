@@ -5,3 +5,4 @@ export const FILTER_PRODUCTS = "FILTER_PRODUCTS";
 export const SORT_PRODUCTS = "SORT_PRODUCTS";
 export const PERSISTED_USER = "PERSISTED_USER"
 
+export const CART_LOAD = "CART_LOAD"

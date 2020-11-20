@@ -1,5 +1,6 @@
 import axios from "axios";
 import {
+  CART_LOAD,
   FILTER_PRODUCTS,
   PERSISTED_USER,
   PRODUCT_LOADING_FAILED,
@@ -17,12 +18,15 @@ export const loadMainPage = () => {
 
     axios.all([loadProducts, loadPersistedUser])
     .then(responses => {
-      const response1 = responses[0].data;
-      const response2 = responses[1].data;
+      const products = responses[0].data;
+      const user = responses[1].data.user;
+      const cart = responses[1].data.cart;
+      
       
 
-       dispatch(productLoadingSuccess(response1));
-       dispatch(persistedUser(response2))
+       dispatch(productLoadingSuccess(products));
+       dispatch(persistedUser(user))
+       dispatch(cartLoad(cart))
     })
   .catch(err =>{
     dispatch(productLoadingFailed(err))
@@ -78,5 +82,15 @@ export const persistedUser = (user) => {
     }
   }
 }
+
+const cartLoad = (cart) => {
+  return{
+    type:CART_LOAD,
+    payload:{
+      cart
+    }
+  }
+}
+
 
 

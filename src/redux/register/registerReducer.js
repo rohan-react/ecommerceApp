@@ -1,4 +1,4 @@
-import {REG_FAILED, REG_SUCCESS, REG_START, CLOSE_ALERT, DISABLE_REDIRECT} from '../register/registerActionTypes'
+import {REG_FAILED, REG_SUCCESS, REG_START, CLOSE_ALERT, } from '../register/registerActionTypes'
 
 const initialState = {
     loading:false,

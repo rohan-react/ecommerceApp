@@ -1,12 +1,19 @@
+import { LOGOUT_SUCCESS } from "../login/loginActionTypes";
 import {
   ADD_TO_CART,
   DECREMENT,
   EMPTY_CART,
   INCREMENT,
   REMOVE_FROM_CART,
+  SAVE_CART_FAILED,
+  SAVE_CART_START,
+  SAVE_CART_SUCCESS,
 } from "./cartActionTypes";
+import {CART_LOAD} from '../home/homeActionTypes'
 const initialState = {
   cartItems: [],
+  loading:false,
+
   totalItem: 0,
 };
 const cartReducer = (state = initialState, action) => {
@@ -14,7 +21,7 @@ const cartReducer = (state = initialState, action) => {
     case ADD_TO_CART:
       return {
         ...state,
-        cartItems: [...state.cartItems, action.payload.product],
+        cartItems: [...state.cartItems, {...action.payload.product, inCart:true}],
       };
     case REMOVE_FROM_CART:
       return {
@@ -41,11 +48,48 @@ const cartReducer = (state = initialState, action) => {
             : item
         ),
       };
+
     case EMPTY_CART:
       return {
         ...state,
         cartItems: [],
       };
+
+    case SAVE_CART_START:
+      return {
+        ...state,
+        loading:true
+      }
+     
+     case SAVE_CART_SUCCESS:
+       return{
+         ...state,
+         loading:false,
+         
+       }
+     
+      case SAVE_CART_FAILED:
+        return{
+          ...state,
+          loading:false,
+         
+        }
+      case LOGOUT_SUCCESS:
+        return{
+          ...state,
+          cartItems:[],
+          totalItems:0
+        }
+
+        case CART_LOAD:
+          return{
+            ...state,
+            cartItems:[...action.payload.cart]
+
+          }
+
+        
+
     default:
       return state;
   }

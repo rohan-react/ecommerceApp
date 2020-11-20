@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { addToCart } from "../redux/cart/cartActions";
+import { addToCart} from "../redux/cart/cartActions";
+
+
 import {loadMainPage} from '../redux/home/homeActions';
 import {disableHomeRedirect} from '../redux/login/loginActions'
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,6 +18,11 @@ import DoneIcon from "@material-ui/icons/Done";
 import Alert from "@material-ui/lab/Alert";
 import Snackbar from "@material-ui/core/Snackbar";
 import Container from "@material-ui/core/Container";
+import LinearProgress from '@material-ui/core/LinearProgress';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Backdrop from '@material-ui/core/Backdrop';
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -38,10 +45,16 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor:"#f1f1f1",
     
   },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    
+  },
 }));
 
 function Menu(props) {
   const classes = useStyles();
+
+  console.log(props.logoutLoading)
 
   useEffect(() => {
     if(props.displayedProducts.length === 0)
@@ -65,7 +78,9 @@ function Menu(props) {
   };
   //************************
 
-  return props.loading?"Products Loading":(<div className={classes.root}>
+  return props.loading?
+  <LinearProgress color="secondary" />
+  :(<div className={classes.root}>
       <Snackbar
         open={open}
         autoHideDuration={2000}
@@ -79,6 +94,11 @@ function Menu(props) {
           Item added to cart
         </Alert>
       </Snackbar>
+        
+        <Backdrop className={classes.backdrop} open={props.logoutLoading} >
+        <CircularProgress color="secondary" />
+      </Backdrop>
+     
 
       <Grid container>
       
@@ -152,6 +172,8 @@ const mapStateToProps = (state) => {
         : products.filter((item) =>
             filters.some((criteria) => item.category === criteria)
           ),
+    user:state.login.user,
+    logoutLoading:state.login.loading
   };
 };
 
@@ -165,7 +187,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     disableHomeRedirect: () => {
       dispatch(disableHomeRedirect())
-    }
+    },
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Menu);

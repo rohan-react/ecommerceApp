@@ -50,10 +50,13 @@ export const disableHomeRedirect = () => {
 
 export const logoutUser = () =>{
      return dispatch => {
-         dispatch(logoutStart);
-         axios.get('http://localhost:5000/user/logout',{withCredentials:true})
+         dispatch(logoutStart());
+       
+              axios.get('http://localhost:5000/user/logout',{withCredentials:true})
          .then(res => dispatch(logoutSuccess()))
          .catch(err => dispatch(logoutFailed()))
+         
+        
      }
 }
 

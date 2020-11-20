@@ -1,10 +1,12 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { connect } from "react-redux";
 import {
   increment,
   decrement,
   removeFromCart,
   emptyCart,
+  saveCart,
+  loadCart
 } from "../redux/cart/cartActions";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -17,6 +19,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import Container from "@material-ui/core/Container";
+import { Divider } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,8 +39,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Cart(props) {
-  console.log(props.cartItems);
+  
   const classes = useStyles();
+  
+  const handleEmptyCart = () => {
+    props.emptyCart()
+    if(Object.keys(props.user).length>0)
+     props.saveCart([]);
+   
+  }
+
+  const handleRemoveFromCart = (id) => {
+    if(props.totalItems===1 && Object.keys(props.user).length>0 ){
+      props.saveCart([]);
+    }
+    props.removeFromCart(id)
+  }
 
   return (
     <div className={classes.root}>
@@ -55,7 +72,7 @@ function Cart(props) {
           <Grid item xs={7} md={9} >
             {props.cartItems.map((img) => (
               <Grid container key={img.id}  alignItems="center" className={classes.grid}>
-                 <Grid item xs={0} md={1}></Grid>
+                 <Grid item md={1}></Grid>
                  <Grid item xs={5} md={2}>
                   <img className={classes.img} src={img.url} alt="" />
                 </Grid>
@@ -68,7 +85,7 @@ function Cart(props) {
                     {img.price}
                   </Typography>
                   <Button
-                    onClick={() => props.removeFromCart(img.id)}
+                    onClick={() => handleRemoveFromCart(img.id)}
                     variant="contained"
                     size="small"
                     color="primary"
@@ -92,7 +109,7 @@ function Cart(props) {
             ))}
             </Grid>
 
-            <Grid xs={1}></Grid>
+            <Grid item xs={1}></Grid>
 
             
             <Grid align="center" item  xs={4} md={2} className={classes.grid}>
@@ -106,17 +123,18 @@ function Cart(props) {
       
         variant="text"
       >
-            <Button fullWidth variant="contained" color="secondary" size="small">
+            <Button variant="contained" color="secondary" size="small">
               Buy Now
             </Button>
             <br/>
-            <Button  fullWidth variant="contained" color="secondary" size="small">
+            {Object.keys(props.user).length>0 ? (<Button onClick={() => props.saveCart(props.cartItems)} variant="contained" color="secondary" size="small">
               Save Cart
-            </Button>
-            <br/>
-            <Button variant="outlined" fullWidth onClick={props.emptyCart} color="primary" size="small">
+            </Button>):''}
+             <br/>
+            <Button variant="outlined" onClick={handleEmptyCart} color="primary" size="small">
               Empty Cart
             </Button>
+           
             </ButtonGroup>
             </Grid>
 
@@ -140,6 +158,7 @@ const mapStateToProps = (state) => {
       (acc, item) => acc + parseFloat(item.price.slice(1)) * item.quantity,
       0
     ),
+    user:state.login.user
   };
 };
 const mapDispatchToProps = (dispatch) => {
@@ -156,6 +175,10 @@ const mapDispatchToProps = (dispatch) => {
     emptyCart: () => {
       dispatch(emptyCart());
     },
+    saveCart: (cart) => {
+      dispatch(saveCart(cart))
+    } ,
+    
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);

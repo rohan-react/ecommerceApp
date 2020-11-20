@@ -33,7 +33,6 @@ router.post('/register', (req, res) => {
 router.post("/login", (req, res) => {
     passport.authenticate("local", (err, user, info) => {
         if(!user){
-            
             res.status(401).send(info.message)
         }
         else{

@@ -1,6 +1,6 @@
 import { PERSISTED_USER } from "../home/homeActionTypes"
 
-const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, CLOSE_FLASH,DISABLE_HOME_REDIRECT, LOGOUT_FAILED, LOGOUT_SUCCESS } = require("./loginActionTypes")
+const { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILED, CLOSE_FLASH,DISABLE_HOME_REDIRECT, LOGOUT_FAILED, LOGOUT_SUCCESS, LOGOUT_START } = require("./loginActionTypes")
 
 
 const initialState = {
@@ -51,6 +51,19 @@ const loginReducer = (state=initialState, action)=>{
             user:{...action.payload.user}
         }
 
+        case LOGOUT_START:
+            return {
+                ...state,
+                loading:true
+            }
+
+       case LOGOUT_SUCCESS:
+           return{
+                ...state,
+                loading:false,
+                 user:{}
+                }
+
     case LOGOUT_FAILED:
         return{
             ...state,
@@ -58,18 +71,7 @@ const loginReducer = (state=initialState, action)=>{
 
         }
 
-    case LOGIN_START:
-        return {
-            ...state,
-            loading:true
-        }
 
-    case LOGOUT_SUCCESS:
-        return{
-            ...state,
-            loading:false,
-            user:{}
-        }
     default : return state;
 
 
