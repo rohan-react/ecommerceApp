@@ -4,6 +4,7 @@
   "description": "ecommerce",
   "main": "index.js",
   "scripts": {
+    "start": "node server.js",
     "client": "npm start --prefix ../",
     "server": "nodemon index.js",
     "dev" : "concurrently \"npm run server\" \"npm run client\"",
