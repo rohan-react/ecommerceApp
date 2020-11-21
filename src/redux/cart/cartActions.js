@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {
   ADD_TO_CART,
-  CART_LOAD,
   DECREMENT,
   EMPTY_CART,
   INCREMENT,

@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {registerUser, closeAlert} from '../redux/register/registerActions'
 import {connect} from 'react-redux'
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -44,7 +44,7 @@ function Register(props) {
   const handleRegister = () => {
     if(name===''|| email===''|| password===''|| password2==='')
      setError("All fields are compulsory")
-    else if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))
+    else if(!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))
      setError("enter a valid email ")
     else if(password !== password2)
      setError("Passwords should match")

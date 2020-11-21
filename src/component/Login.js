@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {connect} from 'react-redux'
 import { Link, Redirect } from "react-router-dom";
 import {closeFlash, loginUser} from '../redux/login/loginActions'
-import {closeAlert} from '../redux/register/registerActions'
+
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
@@ -40,7 +40,7 @@ function Login(props) {
   const handleLogin = () => {
     if(email===''|| password==='' )
      setError("All fields are compulsory")
-    else if(!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))
+    else if(!/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g.test(email))
      setError("enter a valid email ")
     else if(password.length<2)
      setError("Password must be atleast 8 characters long")

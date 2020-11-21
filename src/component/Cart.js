@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import { connect } from "react-redux";
 import {
   increment,
@@ -6,7 +6,6 @@ import {
   removeFromCart,
   emptyCart,
   saveCart,
-  loadCart
 } from "../redux/cart/cartActions";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -19,7 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 import Container from "@material-ui/core/Container";
-import { Divider } from "@material-ui/core";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
