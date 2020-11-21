@@ -6,6 +6,7 @@ const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 const app = express();
+const path = require('path')
 
 require('dotenv').config();
 
@@ -37,6 +38,14 @@ require('./passport/passport')(passport);
 app.use("/", require('./Routes/index'));
 app.use("/user", require('./Routes/user'));
 
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('../build'));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname,'../','build','index.html'))
+  })
+
+}
+
 const PORT = process.env.PORT || 5000
 
-app.listen(PORT, console.log('server started on port', PORT))
+app.listen(PORT, console.log(`server started on port ${PORT}`))
