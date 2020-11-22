@@ -2,6 +2,8 @@ import React, {useState} from "react";
 import {connect} from 'react-redux'
 import { Link, Redirect } from "react-router-dom";
 import {closeFlash, loginUser} from '../redux/login/loginActions'
+import Grid from "@material-ui/core/Grid";
+
 
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -22,7 +24,7 @@ import Backdrop from '@material-ui/core/Backdrop';
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "5rem",
-    width: "40%",
+   
     margin: "auto",
     alignItems: "center",
   },
@@ -64,7 +66,12 @@ function Login(props) {
     <Backdrop className={classes.backdrop}  open={props.loading} >
         <CircularProgress color="secondary" />
       </Backdrop>
-     
+
+
+      <Grid container >
+      <Grid item xs={3}  md={4}></Grid>
+
+      <Grid item xs={6}  md={4}>
      <Card className={classes.root}> 
      <Collapse in={error.length>0}>
         <Alert
@@ -144,6 +151,9 @@ function Login(props) {
           </Button>
         </CardActions>
       </Card>
+      </Grid>
+        <Grid item xs={3}  md={4}></Grid>
+      </Grid>
     </div>
   );
 }

@@ -17,11 +17,12 @@ import Collapse from '@material-ui/core/Collapse';
 import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
+import Grid from "@material-ui/core/Grid";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: "5rem",
-    width: "50%",
     margin: "auto",
   },
    backdrop: {
@@ -68,8 +69,12 @@ function Register(props) {
        <Backdrop className={classes.backdrop}  open={props.loading} >
         <CircularProgress color="secondary" />
       </Backdrop>
-     
-      <Card className={classes.root}>
+
+       <Grid container >
+      <Grid item xs={3}  md={4}></Grid>
+
+      <Grid item  xs={6}  md={4}>
+       <Card className={classes.root}>
         <CardContent>
           <Typography align="center" color="secondary" gutterBottom>
             <FastfoodIcon /> FoodCorner
@@ -171,7 +176,10 @@ function Register(props) {
             login
           </Button>
         </CardActions>
-      </Card>
+      </Card>  
+      </Grid>
+      <Grid item xs={3}  md={4}></Grid>
+      </Grid>
     </div>
   
 }
