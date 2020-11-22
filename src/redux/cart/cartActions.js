@@ -50,7 +50,7 @@ export const decrement = (id) => {
 export const saveCart = (cart) => {
   return dispatch => {
     dispatch(saveCartStart());
-    axios.post('http://localhost:5000/cart', {cart},{withCredentials:true})
+    axios.post('/cart', {cart},{withCredentials:true})
     .then(res => dispatch(saveCartSuccess()))
     .catch(err => dispatch(saveCartFailed()))
   }

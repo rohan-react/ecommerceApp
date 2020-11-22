@@ -28,7 +28,7 @@ const loginFailed = (message) => {
 export const loginUser = (user) => {
     return dispatch => {
         dispatch(loginStart());
-        axios.post("http://localhost:5000/user/login",user,{withCredentials:true})
+        axios.post("/user/login",user,{withCredentials:true})
         .then(res => {
            
             dispatch(loginSuccess(res.data))} )
@@ -52,7 +52,7 @@ export const logoutUser = () =>{
      return dispatch => {
          dispatch(logoutStart());
        
-              axios.get('http://localhost:5000/user/logout',{withCredentials:true})
+              axios.get('/user/logout',{withCredentials:true})
          .then(res => dispatch(logoutSuccess()))
          .catch(err => dispatch(logoutFailed()))
          

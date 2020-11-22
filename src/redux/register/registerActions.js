@@ -28,7 +28,7 @@ const regStart = () => {
 export const registerUser = (user)=>{
     return dispatch => {
         dispatch(regStart());
-        axios.post('http://localhost:5000/user/register',user)
+        axios.post('/user/register',user)
         .then(res =>dispatch(regSuccess(res.data)))
         .catch(err => {
             dispatch(regFailed(err.response.data))})

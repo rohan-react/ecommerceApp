@@ -13,8 +13,8 @@ import {
 export const loadMainPage = () => {
   return dispatch => {
     dispatch(productLoadingStarted());
-    const loadProducts = axios.get("http://localhost:5000/api/products");
-    const loadPersistedUser = axios.get("http://localhost:5000/",{withCredentials:true})
+    const loadProducts = axios.get("/api/products");
+    const loadPersistedUser = axios.get("/",{withCredentials:true})
 
     axios.all([loadProducts, loadPersistedUser])
     .then(responses => {
