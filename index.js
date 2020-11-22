@@ -38,13 +38,13 @@ require('./passport/passport')(passport);
 app.use("/", require('./Routes/index'));
 app.use("/user", require('./Routes/user'));
 
-// if(process.env.NODE_ENV === 'production'){
-//   app.use(express.static('../build'));
-//   app.get("*", (req, res) => {
-//     res.sendFile(path.resolve(__dirname,'../','build','index.html'))
-//   })
+if(process.env.NODE_ENV === 'production'){
+  app.use(express.static('../build'));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname,'../','build','index.html'))
+  })
 
-// }
+}
 
 const PORT = process.env.PORT || 5000
 
