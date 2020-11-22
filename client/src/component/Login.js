@@ -69,9 +69,9 @@ function Login(props) {
 
 
       <Grid container >
-      <Grid item xs={3}  md={4}></Grid>
+      <Grid item xs={2}  md={4}></Grid>
 
-      <Grid item xs={6}  md={4}>
+      <Grid item xs={8}  md={4}>
      <Card className={classes.root}> 
      <Collapse in={error.length>0}>
         <Alert
@@ -152,7 +152,7 @@ function Login(props) {
         </CardActions>
       </Card>
       </Grid>
-        <Grid item xs={3}  md={4}></Grid>
+        <Grid item xs={2}  md={4}></Grid>
       </Grid>
     </div>
   );
