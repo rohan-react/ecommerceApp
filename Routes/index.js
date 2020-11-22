@@ -6,8 +6,8 @@ const Cart = require('../models/Cart')
 
 
 
-router.get('/',(req, res) => {
-   
+router.get('/home',(req, res) => {
+  
   if(req.isAuthenticated()){
     Cart.findOne({userId:req.user._id})
    .then(data => {

@@ -14,10 +14,11 @@ export const loadMainPage = () => {
   return dispatch => {
     dispatch(productLoadingStarted());
     const loadProducts = axios.get("/api/products");
-    const loadPersistedUser = axios.get("/",{withCredentials:true})
+    const loadPersistedUser = axios.get("/home",{withCredentials:true})
 
     axios.all([loadProducts, loadPersistedUser])
     .then(responses => {
+      console.log(responses)
       const products = responses[0].data;
       const user = responses[1].data.user;
       const cart = responses[1].data.cart;
